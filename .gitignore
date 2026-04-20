@@ -1,0 +1,13 @@
+# Uploads — local-only, do not deploy the raw originals
+uploads/
+
+# Drafts of the site we no longer ship
+Vernon Ouyang v1.html
+Vernon Ouyang.html
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/

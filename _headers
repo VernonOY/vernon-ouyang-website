@@ -1,0 +1,31 @@
+# Cloudflare Pages headers — cache tuning for static site
+
+# HTML: short cache so edits deploy quickly
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/
+  Cache-Control: public, max-age=300, must-revalidate
+
+# PDFs: aggressive cache (immutable content, reuse across visits)
+/papers/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+  Content-Disposition: inline
+
+/resume/*
+  Cache-Control: public, max-age=86400
+  X-Content-Type-Options: nosniff
+
+# Fonts / images if added later
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.jpg
+  Cache-Control: public, max-age=2592000

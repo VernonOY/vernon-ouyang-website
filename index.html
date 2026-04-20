@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vernon Ouyang — Quantitative Researcher &amp; AI Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  // Suppress benign host ResizeObserver warning
+  (function () {
+    if (!window.ResizeObserver) return;
+    const O = window.ResizeObserver;
+    window.ResizeObserver = class extends O {
+      constructor(cb) { super((e, o) => requestAnimationFrame(() => { try { cb(e, o); } catch(_){} })); }
+    };
+  })();
+  window.addEventListener('error', (e) => {
+    if (e && e.message && String(e.message).includes('ResizeObserver')) {
+      e.stopImmediatePropagation(); e.preventDefault(); return false;
+    }
+  }, true);
+</script>
+
+<script>
+  window.TWEAKS = /*EDITMODE-BEGIN*/{
+    "theme": "dark",
+    "accent": "#ffffff",
+    "density": "comfortable",
+    "heroHeadline": "Quant research, engineered by agents.",
+    "typeSystem": "grotesk"
+  }/*EDITMODE-END*/;
+</script>
+
+<style>
+  :root {
+    --bg: #f5f5f2;
+    --bg-2: #ececea;
+    --fg: #0a0a0a;
+    --fg-2: #333333;
+    --fg-3: #707070;
+    --rule: #cfcfcb;
+    --accent: #0a0a0a;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --display: var(--mono);
+    --accent-font: var(--serif);
+    --pad: 96px;
+  }
+  /* Type system A: mono display + serif italic accents (rich) */
+  [data-type="mono-serif"] { --display: var(--mono); --accent-font: var(--serif); }
+  /* Type system B: mono-only with IBM Plex Mono for accents (reduced serif) */
+  [data-type="mono-plex"]  { --display: 'JetBrains Mono', monospace; --accent-font: 'IBM Plex Mono', monospace; }
+  /* Type system C: Space Grotesk display + mono accents (no serif at all) */
+  [data-type="grotesk"]    { --display: 'Space Grotesk', system-ui, sans-serif; --accent-font: var(--mono); }
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --bg-2: #141414;
+    --fg: #ededed;
+    --fg-2: #c0c0c0;
+    --fg-3: #707070;
+    --rule: #262626;
+    --accent: #ededed;
+  }
+  [data-density="compact"]      { --pad: 64px; }
+  [data-density="comfortable"]  { --pad: 96px; }
+  [data-density="spacious"]     { --pad: 140px; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body { overflow-x: hidden; max-width: 100vw; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--fg); color: var(--bg); }
+
+  /* ---- All the metadata, labels, code-y bits stay mono ---- */
+  .topbar, .hero-meta, .hero-stats .k, .sec-tag, .proj-meta, .proj-id,
+  .proj-stats .k, .proj-stats .v, .tag, .viz, .viz-title, .viz-skills,
+  .viz-pipe, .viz-table, .viz-bars, .exp .year, .exp .loc, .exp .role,
+  .award .yr, .award .prize, .more-item .cat, .more-item .yr,
+  .edu .k, .c-grid .k, .c-grid .v, .cta, footer, #tweaks, .btn {
+    font-family: var(--mono);
+  }
+  /* Hero stat values: big mono numbers */
+  .hero-stats .v { font-family: var(--mono); font-size: 32px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
+  .hero-stats .v small { font-family: var(--mono); font-size: 11px; color: var(--fg-3); font-weight: 400; letter-spacing: 0; }
+  /* Proj stats */
+  .proj-stats .v { font-family: var(--mono); font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+  .proj-stats .v small { font-family: var(--mono); font-size: 11px; font-weight: 400; }
+  /* Exp role */
+  .exp .role { font-family: var(--display); font-size: 18px; font-weight: 500; letter-spacing: -0.015em; }
+  .exp .role .co { font-family: var(--accent-font); font-style: italic; font-size: 16px; letter-spacing: -0.005em; color: var(--fg-3); }
+  /* Award title */
+  .award .ttl { font-family: var(--display); font-size: 16px; font-weight: 500; letter-spacing: -0.015em; }
+  .award .ttl .sub { font-family: var(--accent-font); font-style: italic; font-size: 14px; letter-spacing: -0.005em; color: var(--fg-3); }
+  /* More item */
+  .more-item .t { font-family: var(--display); font-size: 17px; font-weight: 500; letter-spacing: -0.015em; }
+  .more-item .t .sub { font-family: var(--accent-font); font-style: italic; font-size: 14px; color: var(--fg-3); letter-spacing: -0.005em; }
+  /* Edu */
+  .edu .v { font-family: var(--display); font-size: 17px; font-weight: 500; letter-spacing: -0.015em; }
+  .edu .v .sub { font-family: var(--accent-font); font-style: italic; font-size: 13px; color: var(--fg-3); }
+  /* About lead: pull-quote */
+  .about .lead { font-family: var(--accent-font); font-size: 28px; font-weight: 400; font-style: italic; letter-spacing: -0.005em; line-height: 1.25; color: var(--fg); }
+  .about p { font-family: var(--sans); }
+  /* Contact title */
+  .contact .c-title { font-family: var(--display); font-weight: 500; letter-spacing: -0.03em; }
+  /* ---- Utility ---- */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+  /* ---- Top bar ---- */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar .brand { font-weight: 600; }
+  .topbar .brand::before { content: "~/ "; color: var(--fg-3); }
+  .topbar nav { display: flex; gap: 24px; }
+  .topbar nav a { color: var(--fg-2); }
+  .topbar nav a:hover { color: var(--fg); }
+  .topbar nav a::before { content: "· "; color: var(--fg-3); }
+  .topbar .right { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    background: transparent;
+    border: 1px solid var(--fg);
+    color: var(--fg);
+    font-family: inherit; font-size: 12px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--fg); color: var(--bg); }
+
+  /* ---- Hero ---- */
+  .hero {
+    padding: 140px 0 80px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    font-size: 12px;
+    color: var(--fg-3);
+    padding-bottom: 32px;
+    border-bottom: 1px dashed var(--rule);
+    margin-bottom: 48px;
+  }
+  .hero-meta .k { color: var(--fg-3); margin-bottom: 6px; }
+  .hero-meta .v { color: var(--fg); }
+
+  .hero-headline {
+    font-family: var(--display);
+    font-size: clamp(40px, 6.4vw, 92px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    max-width: 20ch;
+  }
+  .hero-headline span { font-family: var(--accent-font); font-style: italic; color: var(--fg-3); font-weight: 400; letter-spacing: -0.01em; }
+
+  /* Typing caret for hero headline */
+  .hero-headline.typing::after {
+    content: "▌";
+    display: inline-block;
+    margin-left: 0.08em;
+    color: var(--fg-3);
+    animation: voCaret 1s steps(1) infinite;
+    font-weight: 300;
+    transform: translateY(-0.05em);
+  }
+  @keyframes voCaret { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-headline.typing::after { display: none; }
+  }
+
+  .hero-sub {
+    margin-top: 36px;
+    font-family: var(--accent-font);
+    font-size: clamp(18px, 1.8vw, 26px);
+    max-width: 52ch;
+    color: var(--fg-2);
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  .hero-stats {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+  }
+  .hero-stats .k { font-size: 11px; color: var(--fg-3); margin-bottom: 8px; }
+  .hero-stats .v { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+  .hero-stats .v small { color: var(--fg-3); font-weight: 400; font-size: 13px; }
+
+  /* ---- Section ---- */
+  section { padding: var(--pad) 0; border-bottom: 1px solid var(--rule); }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+    align-items: baseline;
+  }
+  .sec-tag { font-size: 12px; color: var(--fg-3); }
+  .sec-tag::before { content: attr(data-num) "  ·  "; color: var(--fg); }
+  .sec-title {
+    font-family: var(--display);
+    font-size: clamp(24px, 2.8vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+  .sec-title span { font-family: var(--accent-font); color: var(--fg-3); font-style: italic; font-weight: 400; }
+
+  /* ---- Project block ---- */
+  .proj {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 40px 0;
+    border-top: 1px solid var(--rule);
+    min-width: 0;
+  }
+  .proj:last-child { border-bottom: 1px solid var(--rule); }
+  .proj-meta { font-size: 12px; color: var(--fg-3); }
+  .proj-meta .row { display: grid; grid-template-columns: 80px 1fr; gap: 8px; margin-bottom: 6px; }
+  .proj-meta .row .k { color: var(--fg-3); }
+  .proj-meta .row .v { color: var(--fg); }
+  .proj-id { color: var(--fg); font-weight: 600; margin-bottom: 16px; font-size: 13px; }
+
+  .proj-body { max-width: 780px; min-width: 0; overflow: hidden; }
+  .proj-title {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .proj-title span { font-family: var(--accent-font); color: var(--fg-3); font-style: italic; font-weight: 400; letter-spacing: -0.005em; }
+  .proj-desc {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    max-width: 68ch;
+  }
+
+  .proj-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    padding: 20px 0;
+    border-top: 1px dashed var(--rule);
+    border-bottom: 1px dashed var(--rule);
+    margin: 28px 0;
+  }
+  .proj-stats.three { grid-template-columns: repeat(3, 1fr); }
+  .proj-stats .k { font-size: 11px; color: var(--fg-3); margin-bottom: 6px; }
+  .proj-stats .v { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+  .proj-stats .v small { color: var(--fg-3); font-weight: 400; font-size: 12px; }
+
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tag {
+    font-size: 11px;
+    color: var(--fg-2);
+    border: 1px solid var(--rule);
+    padding: 4px 8px;
+  }
+
+  .proj-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 2px;
+  }
+  .proj-link::after { content: " →"; }
+
+  .proj-links { display: flex; flex-wrap: wrap; gap: 18px 24px; margin-top: 20px; align-items: baseline; }
+  .proj-links .proj-link { margin-top: 0; }
+  .proj-link.secondary { color: var(--fg-2); border-bottom-color: var(--fg-3); }
+  .proj-link.secondary:hover { color: var(--fg); border-bottom-color: var(--fg); }
+  .paper-note { font-size: 10px; color: var(--fg-3); letter-spacing: 0.03em; text-transform: uppercase; }
+  .paper-note a { color: var(--fg-2); border-bottom: 1px solid var(--rule); }
+  .paper-note a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+
+  /* ---- Visualization blocks: flat, wireframe ---- */
+  .viz {
+    margin-top: 28px;
+    border: 1px solid var(--rule);
+    padding: 20px;
+    font-size: 11px;
+    color: var(--fg-2);
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .viz-title {
+    font-size: 10px;
+    color: var(--fg-3);
+    margin-bottom: 14px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* alpha skills: numbered list */
+  .viz-skills {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .viz-skills .cell {
+    background: var(--bg);
+    padding: 12px;
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .viz-skills .cell .n { color: var(--fg-3); font-size: 11px; }
+  .viz-skills .cell .lbl { color: var(--fg); }
+
+  /* agent pipeline: linear text flow */
+  .viz-pipe {
+    font-size: 12px;
+    line-height: 2;
+    color: var(--fg-2);
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .viz-pipe span.node {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    color: var(--fg);
+    margin: 0 2px;
+  }
+  .viz-pipe span.arrow { color: var(--fg-3); margin: 0 4px; }
+
+  /* alpha-kit packages: table */
+  .viz-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .viz-table th, .viz-table td {
+    text-align: left;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    vertical-align: top;
+  }
+  .viz-table th {
+    font-weight: 400;
+    color: var(--fg-3);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .viz-table td.name { color: var(--fg); font-weight: 500; width: 180px; }
+  .viz-table td.desc { color: var(--fg-2); }
+
+  /* CUMCM: ascii-like bars */
+  .viz-bars { display: grid; grid-template-columns: 80px 1fr 60px; gap: 12px; font-size: 11px; }
+  .viz-bars .band { color: var(--fg-3); }
+  .viz-bars .bar {
+    height: 14px;
+    background: var(--rule);
+    position: relative;
+    align-self: center;
+  }
+  .viz-bars .bar::after {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    background: var(--fg);
+    width: var(--w, 50%);
+  }
+  .viz-bars .val { color: var(--fg); text-align: right; }
+
+  /* ---- Experience ---- */
+  .exp {
+    display: grid;
+    grid-template-columns: 100px 1fr 1.8fr 120px;
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+  }
+  .exp:last-child { border-bottom: 1px solid var(--rule); }
+  .exp .year { color: var(--fg-3); }
+  .exp .role { color: var(--fg); }
+  .exp .role .co { display: block; color: var(--fg-3); margin-top: 2px; }
+  .exp .desc { color: var(--fg-2); line-height: 1.6; }
+  .exp .loc { color: var(--fg-3); text-align: right; font-size: 11px; }
+
+  /* ---- Awards table ---- */
+  .awards { font-size: 13px; }
+  .award {
+    display: grid;
+    grid-template-columns: 60px 1fr 1.6fr 140px;
+    gap: 20px;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .awards .award:last-child { border-bottom: 1px solid var(--rule); }
+  .award .yr { color: var(--fg-3); font-size: 12px; }
+  .award .ttl { color: var(--fg); }
+  .award .ttl .sub { display: block; color: var(--fg-3); font-size: 11px; margin-top: 2px; }
+  .award .dsc { color: var(--fg-2); font-size: 12px; line-height: 1.55; }
+  .award .prize { color: var(--fg); text-align: right; font-size: 11px; }
+  .award .prize a { color: var(--fg); border-bottom: 1px solid var(--fg-3); padding-bottom: 1px; }
+  .award .prize a:hover { border-bottom-color: var(--fg); }
+  .more .more-item .avail { margin-top: 8px; font-size: 10px; color: var(--fg-3); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ---- More projects: list, not grid ---- */
+  .more .more-item {
+    display: grid;
+    grid-template-columns: 140px 1fr 100px;
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .more .more-item:last-child { border-bottom: 1px solid var(--rule); }
+  .more .more-item .cat { color: var(--fg-3); font-size: 11px; }
+  .more .more-item .t { color: var(--fg); font-size: 14px; margin-bottom: 6px; }
+  .more .more-item .t .sub { display: block; color: var(--fg-3); font-size: 11px; margin-top: 2px; }
+  .more .more-item .d { color: var(--fg-2); font-size: 12px; line-height: 1.6; max-width: 70ch; }
+  .more .more-item .yr { color: var(--fg-3); font-size: 11px; text-align: right; }
+
+  /* ---- About ---- */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .about p { font-size: 14px; color: var(--fg-2); line-height: 1.75; }
+  .about p + p { margin-top: 14px; }
+  .about .lead { color: var(--fg); font-size: 16px; }
+  .edu {
+    grid-column: 1 / -1;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .edu .k { color: var(--fg-3); font-size: 11px; margin-bottom: 8px; }
+  .edu .v { color: var(--fg); font-size: 14px; }
+  .edu .v .sub { display: block; color: var(--fg-3); font-size: 11px; margin-top: 2px; }
+
+  /* ---- Contact ---- */
+  .contact .c-title {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+    line-height: 1.1;
+  }
+  .contact .c-title span { color: var(--fg-3); }
+  .contact .c-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .contact .c-grid .k { color: var(--fg-3); font-size: 11px; margin-bottom: 6px; }
+  .contact .c-grid .v { color: var(--fg); font-size: 13px; word-break: break-all; }
+  .contact .c-grid .v a { border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+  .contact .c-grid .v a:hover { border-color: var(--fg); }
+  .cta {
+    display: inline-block;
+    margin-top: 48px;
+    padding: 14px 22px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 12px;
+    border: 1px solid var(--fg);
+  }
+  .cta:hover { background: transparent; color: var(--fg); }
+  .cta::after { content: "  ↓  PDF"; color: inherit; opacity: 0.6; }
+
+  footer {
+    padding: 24px 0;
+    display: flex; justify-content: space-between;
+    font-size: 11px;
+    color: var(--fg-3);
+    border-top: 1px solid var(--rule);
+    margin-top: 80px;
+  }
+
+  /* ---- Tweaks ---- */
+  #tweaks {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 280px;
+    background: var(--bg);
+    border: 1px solid var(--fg);
+    z-index: 100;
+    font-size: 11px;
+    display: none;
+  }
+  #tweaks.open { display: block; }
+  #tweaks .hd { padding: 10px 14px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; }
+  #tweaks .hd button { background: none; border: none; color: inherit; cursor: pointer; font: inherit; }
+  #tweaks .bd { padding: 14px; display: flex; flex-direction: column; gap: 16px; max-height: 60vh; overflow-y: auto; }
+  #tweaks label { display: block; color: var(--fg-3); margin-bottom: 6px; font-size: 10px; }
+  #tweaks .opts { display: flex; gap: 4px; flex-wrap: wrap; }
+  #tweaks .opts button {
+    background: transparent; border: 1px solid var(--rule); color: var(--fg-2);
+    font: inherit; padding: 5px 9px; cursor: pointer;
+  }
+  #tweaks .opts button.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  #tweaks textarea {
+    width: 100%; background: transparent; border: 1px solid var(--rule); color: var(--fg);
+    padding: 6px; font: inherit; resize: vertical; min-height: 48px;
+  }
+  #tweaks input[type=color] { width: 100%; height: 28px; border: 1px solid var(--rule); background: transparent; }
+
+  @media (max-width: 900px) {
+    .wrap { padding: 0 20px; }
+    .topbar { padding: 14px 20px; }
+    .topbar nav { display: none; }
+    .hero { padding: 100px 0 60px; }
+    .hero-headline { font-size: clamp(32px, 10vw, 56px) !important; max-width: 100%; word-break: break-word; }
+    .hero-sub { font-size: 16px !important; }
+    .hero-meta, .hero-stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .hero-stats .v { font-size: 20px !important; }
+    .sec-head, .proj { grid-template-columns: 1fr; gap: 16px; }
+    .sec-title { font-size: clamp(22px, 6vw, 32px) !important; }
+    .proj-title { font-size: clamp(20px, 5vw, 26px) !important; }
+    .proj-stats { grid-template-columns: 1fr 1fr !important; }
+    .proj-stats .v { font-size: 20px !important; }
+    .exp { grid-template-columns: 1fr; }
+    .exp .loc { text-align: left; }
+    .award { grid-template-columns: 60px 1fr; }
+    .award .dsc, .award .prize { grid-column: 1 / -1; text-align: left; }
+    .more .more-item { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; }
+    .edu { grid-template-columns: 1fr; }
+    .contact .c-grid { grid-template-columns: 1fr 1fr; }
+    .viz-skills { grid-template-columns: 1fr; }
+    /* Pipeline viz: allow horizontal scroll instead of overflow */
+    .viz-pipe, .viz { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .viz-pipe > * { flex-shrink: 0; }
+    /* Tweaks panel: smaller on mobile */
+    #tweaks { width: calc(100vw - 32px); right: 16px; bottom: 16px; max-width: 320px; }
+    footer { flex-direction: column; gap: 8px; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 16px; }
+    .hero-meta, .hero-stats, .contact .c-grid { grid-template-columns: 1fr; }
+    .hero-headline { font-size: clamp(28px, 9vw, 44px) !important; }
+  }
+</style>
+</head>
+<body data-theme="dark" data-density="compact">
+
+<div class="topbar">
+  <div class="brand">vernon-ouyang</div>
+  <nav>
+    <a href="#work" data-i18n="nav_work">work</a>
+    <a href="#experience" data-i18n="nav_exp">experience</a>
+    <a href="#awards" data-i18n="nav_awards">awards</a>
+    <a href="#about" data-i18n="nav_about">about</a>
+    <a href="#contact" data-i18n="nav_contact">contact</a>
+  </nav>
+  <div class="right">
+    <button class="btn" id="lang-btn">EN / 中文</button>
+    <button class="btn" id="theme-btn">theme: dark</button>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" data-screen-label="01 Hero">
+  <div class="wrap">
+    <div class="hero-meta">
+      <div><div class="k">// name</div><div class="v" data-i18n="hero_name">Wendi "Vernon" Ouyang</div></div>
+      <div><div class="k">// role</div><div class="v" data-i18n="hero_role">Quant Researcher / AI Engineer</div></div>
+      <div><div class="k">// based</div><div class="v" data-i18n="hero_based">Shenzhen · Shanghai</div></div>
+      <div><div class="k">// status</div><div class="v" data-i18n="hero_status">Open to 2026–2027 development internships</div></div>
+    </div>
+
+    <h1 class="hero-headline" id="hero-headline" data-i18n-html="hero_headline">
+      Quantitative research,<br/>
+      <span>automated end&#8209;to&#8209;end.</span>
+    </h1>
+
+    <p class="hero-sub" data-i18n="hero_sub">
+      I design and ship the systems behind institutional quant research &mdash; multi-agent LLM pipelines,
+      RAG harnesses over thousands of APIs, strict-typed Python libraries, and full-stack backtest dashboards.
+      BSc candidate in Applied Mathematics, The Chinese University of Hong Kong, Shenzhen (2027).
+    </p>
+
+    <div class="hero-stats">
+      <div>
+        <div class="k">// current</div>
+        <div class="v">Quant Dev &amp; AI Harness Eng.<br/><small>Sinolink Securities</small></div>
+      </div>
+      <div>
+        <div class="k">// shipping</div>
+        <div class="v">9<br/><small>open-source AI skills</small></div>
+      </div>
+      <div>
+        <div class="k">// signals_tested</div>
+        <div class="v">27,000+<br/><small>across 7 sector strategies</small></div>
+      </div>
+      <div>
+        <div class="k">// papers</div>
+        <div class="v">3<br/><small>DRO · GARCH · VaR/ES</small></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WORK ============ -->
+<section id="work" data-screen-label="02 Work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="01">// selected_work</div>
+      <h2 class="sec-title" data-i18n="work_title">Four projects that defined the year.</h2>
+    </div>
+
+    <!-- 01 Alpha Skills -->
+    <article class="proj">
+      <div class="proj-meta">
+        <div class="proj-id">[01] alpha-skills</div>
+        <div class="row"><div class="k">year</div><div class="v">2026</div></div>
+        <div class="row"><div class="k">role</div><div class="v">Solo · Creator</div></div>
+        <div class="row"><div class="k">stack</div><div class="v">Python · LLM · RAG</div></div>
+        <div class="row"><div class="k">license</div><div class="v">Open source</div></div>
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title" data-i18n-html="p1_title">Alpha Skills <span>— your AI-powered senior quant researcher. Discover, evaluate, backtest — all through natural language.</span></h3>
+        <p class="proj-desc" data-i18n="p1_desc1">
+          9 composable AI skills that turn Cursor, Windsurf, Claude Code, or any coding assistant into a quant research desk.
+          Natural-language factor discovery, institutional-grade IC/ICIR/quintile evaluation, automated mining across template +
+          combinatorial + mutation strategies, SQLite factor registry, multi-factor backtesting with Sharpe/MaxDD/PF gates,
+          IC decay monitoring, daily signal generation, and a full autopilot loop (mine → evaluate → register → monitor → retire).
+        </p>
+        <p class="proj-desc" data-i18n="p1_desc2">
+          Works out of the box for A-share, HK, and US — auto-adapts T+N rules, price limits, transaction costs. 25+ built-in
+          factors; bring your own data source via a 7-function Python adapter. Apache 2.0.
+        </p>
+        <p class="proj-desc" data-i18n="p1_desc3">
+          Picked up by the quant community: 20,000+ LinkedIn impressions, 1,000+ engagements, and submissions to
+          awesome-quant, awesome-cursorrules, and awesome-ai-tools.
+        </p>
+
+        <div class="proj-stats">
+          <div><div class="k">skills</div><div class="v">9</div></div>
+          <div><div class="k">markets</div><div class="v">CN · HK · US</div></div>
+          <div><div class="k">built_in_factors</div><div class="v">25+</div></div>
+          <div><div class="k">impressions</div><div class="v">20K+</div></div>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">AI Skills</span>
+          <span class="tag">Factor Research</span>
+          <span class="tag">IC / ICIR</span>
+          <span class="tag">Backtesting</span>
+          <span class="tag">A-Share · HK · US</span>
+          <span class="tag">awesome-quant</span>
+          <span class="tag">Apache 2.0</span>
+        </div>
+
+        <div class="viz">
+          <div class="viz-title"><span>// skills.list</span><span>n=9</span></div>
+          <div class="viz-skills">
+            <div class="cell"><span class="n">01</span><span class="lbl">alpha-discover</span></div>
+            <div class="cell"><span class="n">02</span><span class="lbl">alpha-evaluate</span></div>
+            <div class="cell"><span class="n">03</span><span class="lbl">alpha-mine</span></div>
+            <div class="cell"><span class="n">04</span><span class="lbl">alpha-library</span></div>
+            <div class="cell"><span class="n">05</span><span class="lbl">alpha-backtest</span></div>
+            <div class="cell"><span class="n">06</span><span class="lbl">alpha-monitor</span></div>
+            <div class="cell"><span class="n">07</span><span class="lbl">alpha-report</span></div>
+            <div class="cell"><span class="n">08</span><span class="lbl">alpha-signal</span></div>
+            <div class="cell"><span class="n">09</span><span class="lbl">alpha-autopilot</span></div>
+          </div>
+        </div>
+
+        <a class="proj-link" href="https://github.com/VernonOY/alpha-skills" target="_blank" rel="noopener">github.com/VernonOY/alpha-skills</a>
+      </div>
+    </article>
+
+    <!-- 02 Quant Agent -->
+    <article class="proj">
+      <div class="proj-meta">
+        <div class="proj-id">[02] quant-agent</div>
+        <div class="row"><div class="k">year</div><div class="v">2026</div></div>
+        <div class="row"><div class="k">role</div><div class="v">Quant Dev · AI Eng.</div></div>
+        <div class="row"><div class="k">employer</div><div class="v">Sinolink Securities</div></div>
+        <div class="row"><div class="k">loc</div><div class="v">Shanghai</div></div>
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title" data-i18n-html="p2_title">Quant Agent <span>— 9-agent LLM pipeline compressing strategy turnaround from days to under five minutes.</span></h3>
+        <p class="proj-desc" data-i18n="p2_desc1">
+          Built on LangGraph with three-tier self-healing and parallel multi-dimensional code review.
+          A researcher describes a strategy in plain Chinese; the pipeline plans, writes code, self-reviews from
+          four angles in parallel, heals on failure, and delivers a tested backtest notebook.
+          A retrieval layer covering 1,440 gqdata APIs reached 88–100% accuracy after iterative prompt engineering.
+        </p>
+        <p class="proj-desc" data-i18n="p2_desc2">
+          Also shipped: a natural-language API discovery tool, daily factor data pipelines,
+          batch monitoring widgets, and reusable backtest visualization components now used by the research desk.
+        </p>
+
+        <div class="proj-stats">
+          <div><div class="k">agents</div><div class="v">9</div></div>
+          <div><div class="k">apis_indexed</div><div class="v">1,440</div></div>
+          <div><div class="k">retrieval_acc</div><div class="v">88–100 <small>%</small></div></div>
+          <div><div class="k">turnaround</div><div class="v">&lt; 5 <small>min</small></div></div>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">LangGraph</span>
+          <span class="tag">Multi-agent</span>
+          <span class="tag">RAG</span>
+          <span class="tag">Self-healing</span>
+          <span class="tag">Prompt Eng.</span>
+          <span class="tag">Production</span>
+        </div>
+
+        <div class="viz">
+          <div class="viz-title"><span>// pipeline.graph</span><span>nodes=9</span></div>
+          <div class="viz-pipe">
+            <span class="node">intent</span><span class="arrow">→</span>
+            <span class="node">plan</span><span class="arrow">→</span>
+            <span class="node">code</span><span class="arrow">→</span>
+            <span class="node">review_a</span><span class="arrow">∥</span>
+            <span class="node">review_b</span><span class="arrow">∥</span>
+            <span class="node">review_c</span><span class="arrow">→</span>
+            <span class="node">heal_t1</span><span class="arrow">↺</span>
+            <span class="node">heal_t2/t3</span><span class="arrow">→</span>
+            <span class="node">deliver</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 alpha-kit -->
+    <article class="proj">
+      <div class="proj-meta">
+        <div class="proj-id">[03] alpha-kit</div>
+        <div class="row"><div class="k">year</div><div class="v">2026</div></div>
+        <div class="row"><div class="k">role</div><div class="v">Solo · Maintainer</div></div>
+        <div class="row"><div class="k">packages</div><div class="v">4 on PyPI</div></div>
+        <div class="row"><div class="k">tests</div><div class="v">266+ · ≥89% cov</div></div>
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title" data-i18n-html="p3_title">alpha-kit <span>— four-package polyrepo for the full quant research workflow.</span></h3>
+        <p class="proj-desc" data-i18n-html="p3_desc">
+          Every piece I wished existed while writing research code. TDD, <code>mypy --strict</code>, <code>ruff</code>,
+          CI across Python 3.11 / 3.12. 266+ tests; ≥89% coverage per repo.
+        </p>
+
+        <div class="proj-stats">
+          <div><div class="k">packages</div><div class="v">4</div></div>
+          <div><div class="k">tests</div><div class="v">266+</div></div>
+          <div><div class="k">coverage</div><div class="v">≥ 89 <small>%</small></div></div>
+          <div><div class="k">typing</div><div class="v">mypy --strict</div></div>
+        </div>
+
+        <div class="viz">
+          <div class="viz-title"><span>// packages</span><span>n=4</span></div>
+          <table class="viz-table">
+            <thead><tr><th>package</th><th>purpose</th></tr></thead>
+            <tbody>
+              <tr><td class="name">qtype</td><td class="desc">AST look-ahead bias detector (PyPI).</td></tr>
+              <tr><td class="name">regime-lens</td><td class="desc">Factor IC/ICIR slicing by market regime with Plotly reports.</td></tr>
+              <tr><td class="name">backtest-debugger</td><td class="desc">Trade observability SDK + CLI + React Web UI with LLM explanations.</td></tr>
+              <tr><td class="name">context-distiller</td><td class="desc">FTS5 + ChromaDB hybrid retrieval for LLM context injection.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">Python</span>
+          <span class="tag">TDD</span>
+          <span class="tag">mypy --strict</span>
+          <span class="tag">ChromaDB</span>
+          <span class="tag">FTS5</span>
+          <span class="tag">Plotly</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 CUMCM -->
+    <article class="proj">
+      <div class="proj-meta">
+        <div class="proj-id">[04] cumcm-nipt</div>
+        <div class="row"><div class="k">year</div><div class="v">2025</div></div>
+        <div class="row"><div class="k">prize</div><div class="v">First · Guangdong</div></div>
+        <div class="row"><div class="k">contest</div><div class="v">CUMCM</div></div>
+        <div class="row"><div class="k">problem</div><div class="v">C · NIPT</div></div>
+      </div>
+      <div class="proj-body">
+        <h3 class="proj-title" data-i18n-html="p4_title">Optimal NIPT Scheduling <span>— BMI-based risk segmentation for non-invasive prenatal testing.</span></h3>
+        <p class="proj-desc" data-i18n="p4_desc">
+          First Prize in Guangdong, China Undergraduate Mathematical Modeling Contest.
+          Information-gain splitter to stratify BMI risk bands; hybrid CatBoost + random forest predictor for the
+          optimal testing window; Spearman correlation and Benjamini–Hochberg multiple-test correction for statistical validation.
+        </p>
+
+        <div class="proj-stats three">
+          <div><div class="k">prize</div><div class="v">First <small>Guangdong</small></div></div>
+          <div><div class="k">model</div><div class="v">CatBoost + RF</div></div>
+          <div><div class="k">correction</div><div class="v">BH <small>FDR</small></div></div>
+        </div>
+
+        <div class="viz">
+          <div class="viz-title"><span>// bmi_risk_bands</span><span>optimal_week</span></div>
+          <div class="viz-bars">
+            <div class="band">&lt; 22</div>
+            <div class="bar" style="--w: 80%"></div>
+            <div class="val">week 12</div>
+
+            <div class="band">22 – 26</div>
+            <div class="bar" style="--w: 65%"></div>
+            <div class="val">week 13</div>
+
+            <div class="band">26 – 30</div>
+            <div class="bar" style="--w: 50%"></div>
+            <div class="val">week 14</div>
+
+            <div class="band">≥ 30</div>
+            <div class="bar" style="--w: 35%"></div>
+            <div class="val">week 16</div>
+          </div>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">Info Gain</span>
+          <span class="tag">CatBoost</span>
+          <span class="tag">Random Forest</span>
+          <span class="tag">Spearman</span>
+          <span class="tag">BH correction</span>
+        </div>
+
+        <div class="proj-links">
+          <a class="proj-link" href="papers/nipt-optimal-timing.pdf" target="_blank" rel="noopener" download>download paper (PDF, 18 pp)</a>
+          <span class="paper-note">CC BY‑NC‑ND 4.0 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">license</a></span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" data-screen-label="03 Experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="02">// experience</div>
+      <h2 class="sec-title" data-i18n="exp_title">Where I've shipped.</h2>
+    </div>
+
+    <div class="exp">
+      <div class="year">2026</div>
+      <div class="role" data-i18n-html="exp1_role">Quantitative Developer &amp; AI Harness Engineer<span class="co">Sinolink Securities · Quant R&amp;D</span></div>
+      <div class="desc" data-i18n="exp1_desc">Designed and shipped Quant Agent — a 9-agent LangGraph pipeline with three-tier self-healing and parallel review. RAG over 1,440 APIs. Maintained the firm's JupyterLab research lab and deployed production factor/strategy code.</div>
+      <div class="loc" data-i18n="exp1_loc">Shanghai, CN</div>
+    </div>
+
+    <div class="exp">
+      <div class="year">2025</div>
+      <div class="role" data-i18n-html="exp2_role">Quantitative Research Intern<span class="co">HPIS Inc. · SignalSmith Backtester</span></div>
+      <div class="desc" data-i18n="exp2_desc">Designed and deployed a full-stack S&amp;P 500 backtest dashboard (FastAPI + React/Vite). Evaluated 27,000+ trade signals across 7 sector strategies; Sharpe up to 3+ on T1. Authored a 32-page strategy research report.</div>
+      <div class="loc" data-i18n="exp2_loc">Chicago, IL · Remote</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AWARDS ============ -->
+<section id="awards" data-screen-label="04 Awards">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="03">// awards_and_publications</div>
+      <h2 class="sec-title" data-i18n="awards_title">Research and competitions.</h2>
+    </div>
+
+    <div class="awards">
+      <div class="award">
+        <div class="yr">2025</div>
+        <div class="ttl">Machine Learning in Dynamic Multi-Factor Stock Selection<span class="sub">ICIAAI 2025 · First author</span></div>
+        <div class="dsc">Dynamic factor weight adjustment via ML clustering for market regime identification; S&amp;P 500 benchmark comparison.</div>
+        <div class="prize"><a href="papers/ml-multi-factor-stock-selection.pdf" target="_blank" rel="noopener" download>Published · PDF</a></div>
+      </div>
+      <div class="award">
+        <div class="yr">2025</div>
+        <div class="ttl">CUMCM · Problem C<span class="sub">China Undergraduate Math Modeling Contest</span></div>
+        <div class="dsc">Optimal NIPT scheduling — BMI-based risk segmentation, CatBoost + RF, Spearman + BH correction.</div>
+        <div class="prize">First · Guangdong</div>
+      </div>
+      <div class="award">
+        <div class="yr">2025</div>
+        <div class="ttl">DRW Crypto Price Prediction<span class="sub">Kaggle · 2,051 teams</span></div>
+        <div class="dsc">50+ microstructure features; GANDALF neural decision forests blended with XGBoost.</div>
+        <div class="prize"><a href="https://www.kaggle.com/competitions/drw-crypto-market-prediction" target="_blank" rel="noopener">Top 5% Global · Kaggle</a></div>
+      </div>
+      <div class="award">
+        <div class="yr">2024</div>
+        <div class="ttl">RSNA Lumbar Spine Classification<span class="sub">Kaggle</span></div>
+        <div class="dsc">YOLOv8 degenerative spine disease classification on multi-institutional MRI; label masking + probability normalization.</div>
+        <div class="prize"><a href="https://www.kaggle.com/competitions/rsna-2024-lumbar-spine-degenerative-classification" target="_blank" rel="noopener">Silver Medal · Kaggle</a></div>
+      </div>
+      <div class="award">
+        <div class="yr">2024</div>
+        <div class="ttl">WorldQuant Global Quantitative Challenge<span class="sub">BRAIN platform</span></div>
+        <div class="dsc">Alpha signal models via time-series analysis and cross-sectional ranking.</div>
+        <div class="prize">Gold Medal</div>
+      </div>
+      <div class="award">
+        <div class="yr">2025</div>
+        <div class="ttl">COMAP MCM<span class="sub">Mathematical Contest in Modeling</span></div>
+        <div class="dsc">Sustainable development model for tourism-oriented regional economics; stochastic modeling + dynamic programming.</div>
+        <div class="prize"><a href="papers/mcm-competition-paper.pdf" target="_blank" rel="noopener" download>Honorable Mention · PDF</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MORE PROJECTS ============ -->
+<section id="more" class="more" data-screen-label="05 More">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="04">// research_and_university_projects</div>
+      <h2 class="sec-title" data-i18n="more_title">Papers, models, and late-night TeX.</h2>
+    </div>
+
+    <div class="more-item">
+      <div class="cat">Algorithm Investment</div>
+      <div>
+        <div class="t">Optimal Liquidation under Execution Constraints<span class="sub">HJB / QVI · RL vs analytical</span></div>
+        <div class="d">Derived LO-only and LO+MO HJB/QVI systems on the Cartea–Jaimungal–Penalva framework. Analytical ansatz for q=1,2; explicit backward-Euler FD matching to 7×10⁻⁴ relative L∞. Tabular Q-learning + Double-DQN recovered ~81% of the LO+MO premium over TWAP.</div>
+        <div class="avail">Draft · available upon request</div>
+      </div>
+      <div class="yr">Apr 2026</div>
+    </div>
+
+    <div class="more-item">
+      <div class="cat">Risk · DRO</div>
+      <div>
+        <div class="t">Risk Measures under Model Uncertainty<span class="sub">Wasserstein DRO · S&amp;P 100</span></div>
+        <div class="d">Wasserstein ambiguity sets + benchmark-relative loss. SOCP reformulation with O(n³) complexity achieved 49% max-drawdown and 48% CVaR reduction vs. mean-variance on S&amp;P 100 (2019–2024).</div>
+        <div class="avail">Draft · available upon request</div>
+      </div>
+      <div class="yr">2025</div>
+    </div>
+
+    <div class="more-item">
+      <div class="cat">Risk · Dependence Unc.</div>
+      <div>
+        <div class="t">VaR &amp; ES Aggregation Bounds<span class="sub">MFM5130 · Team Lead</span></div>
+        <div class="d">Led 7-member team on the Rearrangement Algorithm + Convolution Bounds framework. EVT tail modeling and copula theory on S&amp;P 100. 32-page paper; oral defense.</div>
+        <div class="avail">Draft · available upon request</div>
+      </div>
+      <div class="yr">Dec 2025</div>
+    </div>
+
+    <div class="more-item">
+      <div class="cat">Volatility</div>
+      <div>
+        <div class="t">Bitcoin Volatility Forecasting<span class="sub">GARCH vs. benchmarks · Team Lead</span></div>
+        <div class="d">Led 10-member team. Six GARCH specs (GARCH, EGARCH, GJR, APARCH, iGARCH, csGARCH) with rolling-window framework. Student-t GARCH(1,1) hit 95.14% coverage; 54–63% forecast-error reduction vs. baselines. Full marks.</div>
+        <div class="avail">Report · available upon request</div>
+      </div>
+      <div class="yr">Nov 2025</div>
+    </div>
+
+    <div class="more-item">
+      <div class="cat">Full-stack · Research</div>
+      <div>
+        <div class="t">SignalSmith Backtester<span class="sub">HPIS Inc. · FastAPI + React</span></div>
+        <div class="d">S&amp;P 500 backtest dashboard evaluating 27,000+ trade signals across 7 sector strategies. T1 strategy reached Sharpe 3+; holding-period optimization via distributional analysis.</div>
+      </div>
+      <div class="yr">2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" data-screen-label="06 About">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="05">// about</div>
+      <h2 class="sec-title" data-i18n="about_title">The short version.</h2>
+    </div>
+
+    <div class="about">
+      <div>
+        <p class="lead" data-i18n="about_lead">Applied-math junior at CUHK-Shenzhen. I work at the seam between quantitative research and AI engineering.</p>
+        <p data-i18n="about_p1">A good multi-agent pipeline replaces a week of boilerplate; a well-tuned factor still beats the benchmark. I like building both.</p>
+      </div>
+      <div>
+        <p data-i18n="about_p2">Current obsession: AI harnesses for research desks. Pipelines that plan, code, review, heal, and deliver strategies in minutes. The last one compressed a days-long turnaround to under five.</p>
+        <p data-i18n="about_p3">Outside work: papers on DRO and risk measures, leading 7–10 person competition teams, and shipping strict-typed open-source Python. Looking for 2026 full-time roles in quantitative research, AI agent engineering, and systematic trading.</p>
+      </div>
+
+      <div class="edu">
+        <div>
+          <div class="k">// degree</div>
+          <div class="v">CUHK-Shenzhen<span class="sub">BSc Applied Math · Minor in CS · Expected 2027</span></div>
+        </div>
+        <div>
+          <div class="k">// summer_25</div>
+          <div class="v">Stanford University<span class="sub">Summer Session</span></div>
+        </div>
+        <div>
+          <div class="k">// summer_24</div>
+          <div class="v">UCLA<span class="sub">Summer Session</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact" data-screen-label="07 Contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag" data-num="06">// contact</div>
+      <h2 class="sec-title" data-i18n="contact_title">Let's talk.</h2>
+    </div>
+
+    <div class="c-grid">
+      <div><div class="k">// email</div><div class="v"><a href="mailto:vernonouyang@gmail.com">vernonouyang@gmail.com</a></div></div>
+      <div><div class="k">// phone</div><div class="v"><a href="tel:+8613129160120">+86 131 2916 0120</a></div></div>
+      <div><div class="k">// github</div><div class="v"><a href="https://github.com/VernonOY" target="_blank" rel="noopener">github.com/VernonOY</a></div></div>
+      <div><div class="k">// linkedin</div><div class="v"><a href="https://www.linkedin.com/in/wendiouyang2004/" target="_blank" rel="noopener">linkedin.com/in/wendiouyang2004</a></div></div>
+    </div>
+
+    <a class="cta" id="resume-cta" href="resume/Wendi_Ouyang_Resume_EN.pdf" download data-i18n="cta_resume">download resume</a>
+
+    <footer>
+      <div>© 2026 vernon ouyang</div>
+      <div>built in html · jetbrains mono</div>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ TWEAKS ============ -->
+<div id="tweaks">
+  <div class="hd"><span>// tweaks</span><button id="tk-close">×</button></div>
+  <div class="bd">
+    <div><label>theme</label><div class="opts" data-key="theme">
+      <button data-val="light">light</button><button data-val="dark">dark</button>
+    </div></div>
+    <div><label>density</label><div class="opts" data-key="density">
+      <button data-val="compact">compact</button>
+      <button data-val="comfortable">comfortable</button>
+      <button data-val="spacious">spacious</button>
+    </div></div>
+    <div><label>type system</label><div class="opts" data-key="typeSystem">
+      <button data-val="mono-serif">mono + serif</button>
+      <button data-val="mono-plex">dual mono</button>
+      <button data-val="grotesk">grotesk</button>
+    </div></div>
+    <div><label>accent</label><input type="color" data-key="accent"></div>
+    <div><label>hero headline</label><textarea data-key="heroHeadline"></textarea></div>
+  </div>
+</div>
+
+<script>
+  const T = window.TWEAKS;
+  const root = document.body;
+  function apply() {
+    root.setAttribute('data-theme', T.theme);
+    root.setAttribute('data-density', T.density);
+    root.setAttribute('data-type', T.typeSystem || 'mono-serif');
+    document.documentElement.style.setProperty('--accent', T.accent);
+    const h = document.getElementById('hero-headline');
+    if (h && T.heroHeadline && T.heroHeadline.trim()) {
+      // Only override if user explicitly set a non-default headline via tweaks
+      if (T.heroHeadline !== "Quant research, engineered by agents.") {
+        const parts = T.heroHeadline.split(/,\s*/);
+        if (parts.length > 1) {
+          h.innerHTML = parts[0] + ',<br/><span>' + parts.slice(1).join(', ') + '</span>';
+        } else {
+          h.textContent = T.heroHeadline;
+        }
+      }
+    }
+    document.getElementById('theme-btn').textContent = 'theme: ' + T.theme;
+    document.querySelectorAll('#tweaks .opts').forEach(g => {
+      g.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.val === T[g.dataset.key]));
+    });
+    document.querySelectorAll('#tweaks [data-key]').forEach(el => {
+      if (el.tagName === 'TEXTAREA') el.value = T[el.dataset.key] || '';
+      if (el.type === 'color') el.value = T[el.dataset.key] || '#000000';
+    });
+  }
+  function setT(k, v) {
+    T[k] = v; apply();
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*'); } catch(e){}
+  }
+  document.getElementById('theme-btn').addEventListener('click', () => setT('theme', T.theme === 'dark' ? 'light' : 'dark'));
+  document.querySelectorAll('#tweaks .opts').forEach(g => {
+    g.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setT(g.dataset.key, b.dataset.val); });
+  });
+  document.querySelectorAll('#tweaks textarea, #tweaks input[type=color]').forEach(el => {
+    el.addEventListener('input', () => setT(el.dataset.key, el.value));
+  });
+  document.getElementById('tk-close').addEventListener('click', () => document.getElementById('tweaks').classList.remove('open'));
+  window.addEventListener('message', ev => {
+    if (!ev.data || typeof ev.data !== 'object') return;
+    if (ev.data.type === '__activate_edit_mode') document.getElementById('tweaks').classList.add('open');
+    if (ev.data.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('open');
+  });
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+  apply();
+
+  /* ==== i18n ==== */
+  const I18N = {
+    en: {
+      nav_work: 'work', nav_exp: 'experience', nav_awards: 'awards', nav_about: 'about', nav_contact: 'contact',
+      hero_name: 'Wendi "Vernon" Ouyang',
+      hero_role: 'Quant Researcher / AI Engineer',
+      hero_based: 'Shenzhen · Shanghai',
+      hero_status: 'Open to 2026–2027 Quant/AI Research internships',
+      hero_headline: 'Quantitative research,<br/><span>now hands-free.</span>',
+      hero_sub: 'I design and ship the systems behind institutional quant research — multi-agent LLM pipelines, RAG harnesses over thousands of APIs, strict-typed Python libraries, and full-stack backtest dashboards. Currently building Replicalpha: an end-to-end research-assistant agent for the full loop from paper collection → reading → replication → backtest. BSc candidate in Applied Mathematics, The Chinese University of Hong Kong, Shenzhen (2027).',
+      work_title: 'Four projects that defined the year.',
+      exp_title: "Where I've shipped.",
+      awards_title: 'Research and competitions.',
+      more_title: 'Papers, models, and late-night TeX.',
+      about_title: 'The short version.',
+      about_lead: 'Applied-math junior at CUHK-Shenzhen. I work at the seam between quantitative research and AI engineering.',
+      about_p1: 'A good multi-agent pipeline replaces a week of boilerplate; a well-tuned factor still beats the benchmark. I like building both.',
+      about_p2: 'Current obsession: AI harnesses for research desks. Pipelines that plan, code, review, heal, and deliver strategies in minutes. The last one compressed a days-long turnaround to under five.',
+      about_p3: 'Outside work: papers on DRO and risk measures, leading 7–10 person competition teams, and shipping strict-typed open-source Python. Looking for 2026 full-time roles in quantitative research, AI agent engineering, and systematic trading.',
+      contact_title: "Let's talk.",
+      cta_resume: 'download resume',
+      exp1_role: 'Quantitative Developer &amp; AI Harness Engineer<span class="co">Sinolink Securities · Quant R&amp;D</span>',
+      exp1_desc: "Designed and shipped Quant Agent — a 9-agent LangGraph pipeline with three-tier self-healing and parallel review. RAG over 1,440 APIs. Maintained the firm's JupyterLab research lab and deployed production factor/strategy code.",
+      exp1_loc: 'Shanghai, CN',
+      exp2_role: 'Quantitative Research Intern<span class="co">HPIS Inc. · SignalSmith Backtester</span>',
+      exp2_desc: 'Designed and deployed a full-stack S&amp;P 500 backtest dashboard (FastAPI + React/Vite). Evaluated 27,000+ trade signals across 7 sector strategies; Sharpe up to 3+ on T1. Authored a 32-page strategy research report.',
+      exp2_loc: 'Chicago, IL · Remote',
+      p1_title: 'Alpha Skills <span>— your AI-powered senior quant researcher. Discover, evaluate, backtest — all through natural language.</span>',
+      p1_desc1: '9 composable AI skills that turn Cursor, Windsurf, Claude Code, or any coding assistant into a quant research desk. Natural-language factor discovery, institutional-grade IC/ICIR/quintile evaluation, automated mining across template + combinatorial + mutation strategies, SQLite factor registry, multi-factor backtesting with Sharpe/MaxDD/PF gates, IC decay monitoring, daily signal generation, and a full autopilot loop (mine → evaluate → register → monitor → retire).',
+      p1_desc2: 'Works out of the box for A-share, HK, and US — auto-adapts T+N rules, price limits, transaction costs. 25+ built-in factors; bring your own data source via a 7-function Python adapter. Apache 2.0.',
+      p1_desc3: 'Picked up by the quant community: 20,000+ LinkedIn impressions, 1,000+ engagements, and submissions to awesome-quant, awesome-cursorrules, and awesome-ai-tools.',
+      p2_title: 'Quant Agent <span>— 9-agent LLM pipeline compressing strategy turnaround from days to under five minutes.</span>',
+      p2_desc1: 'Built on LangGraph with three-tier self-healing and parallel multi-dimensional code review. A researcher describes a strategy in plain Chinese; the pipeline plans, writes code, self-reviews from four angles in parallel, heals on failure, and delivers a tested backtest notebook. A retrieval layer covering 1,440 gqdata APIs reached 88–100% accuracy after iterative prompt engineering.',
+      p2_desc2: 'Also shipped: a natural-language API discovery tool, daily factor data pipelines, batch monitoring widgets, and reusable backtest visualization components now used by the research desk.',
+      p3_title: 'alpha-kit <span>— four-package polyrepo for the full quant research workflow.</span>',
+      p3_desc: 'Every piece I wished existed while writing research code. TDD, <code>mypy --strict</code>, <code>ruff</code>, CI across Python 3.11 / 3.12. 266+ tests; ≥89% coverage per repo.',
+      p4_title: 'Optimal NIPT Scheduling <span>— BMI-based risk segmentation for non-invasive prenatal testing.</span>',
+      p4_desc: 'First Prize in Guangdong, China Undergraduate Mathematical Modeling Contest. Information-gain splitter to stratify BMI risk bands; hybrid CatBoost + random forest predictor for the optimal testing window; Spearman correlation and Benjamini–Hochberg multiple-test correction for statistical validation.'
+    },
+    zh: {
+      nav_work: '作品', nav_exp: '经历', nav_awards: '奖项', nav_about: '关于', nav_contact: '联系',
+      hero_name: '欧阳文迪·Vernon',
+      hero_role: '量化研究员 / AI 工程师',
+      hero_based: '深圳 · 上海',
+      hero_status: '开放 2026–2027 Quant/AI Research实习机会',
+      hero_headline: '量化研究，<br/><span>现在可以解放你的双手了。</span>',
+      hero_sub: '我设计并交付机构级量化研究背后的系统——多智能体 LLM 流水线、涵盖数千 API 的 RAG 框架、严格类型的 Python 工具库，以及全栈回测仪表板。正在开发 研报收集——阅读——复现——回测 的全流程量化研究辅助agent：Replicalpha。香港中文大学（深圳）应用数学在读学士生（2027 届）。',
+      work_title: '定义我这几年的四个项目...',
+      exp_title: '我曾经在此创造:-D',
+      awards_title: '微不足道的一些论文与竞赛...',
+      more_title: '论文、模型，以及深夜里的：灵感迸发。',
+      about_title: '简单的说说我：',
+      about_lead: '香港中文大学（深圳）应用数学大三在读。我的工作位于量化研究与 AI 工程的交汇。',
+      about_p1: '一条优秀的多智能体流水线能替代一周的样板代码；一个调优得当的因子仍能跑赢基准。我喜欢两者兼顾。',
+      about_p2: '目前在做的：为研究员工作台构建 AI 框架。能规划、写代码、自审、自修复，并在几分钟内交付策略的流水线。最新的一条将原本数天的周转压缩到了五分钟以内。',
+      about_p3: '工作之外：写 DRO 和风险测度论文、带 7–10 人比赛队伍、维护严格类型的开源 Python。寻找 2026–2027 量化研究、AI 智能体工程、系统化交易方向的开发实习。',
+      contact_title: '快来和我聊聊吧！',
+      cta_resume: '下载简历',
+      exp1_role: '量化开发工程师 · AI 框架工程师<span class="co">国金证券 · 量化研发</span>',
+      exp1_desc: '设计并交付 Quant Agent——基于 LangGraph 的 9 智能体流水线，具备三级自愈与多角度并行代码评审，采用 RAG 索引 1,440 个 gqdata API。同时维护公司 JupyterLab 研究环境，并交付生产级因子与策略代码。',
+      exp1_loc: '上海',
+      exp2_role: '量化研究实习生<span class="co">HPIS Inc. · SignalSmith 回测平台</span>',
+      exp2_desc: '设计并上线面向标普 500 的全栈回测仪表板（FastAPI + React/Vite）。在 7 个行业策略上评估了 27,000+ 个交易信号；T1 策略夏普比达到 3+。撰写 32 页策略研究报告。',
+      exp2_loc: '芝加哥 · 远程',
+      p1_title: 'Alpha Skills <span>——用自然语言指挥的 AI 量化研究员。一句话完成因子挖掘、评估与回测。</span>',
+      p1_desc1: '9 个可组合的 AI Skill，让 Cursor、Windsurf、Claude Code 或任何 AI 编码助手瞬间成为量化研究员。支持：自然语言因子挖掘、机构级 IC/ICIR/分位数评估、模板+组合+变异三类挖掘策略、SQLite 因子注册表、带多重门槛（Sharpe / MaxDD / PF）的回测、因子失效监控、每日交易信号生成，以及完整的自动驾驶闭环（挖掘 → 评估 → 注册 → 监控 → 退役）。',
+      p1_desc2: '开箱即用地支持 A 股、港股、美股——自动适配 T+N 规则、涨跌停限制、交易成本。内置 25+ 因子；通过 7 个函数的 Python 适配器即可接入任何数据源。Apache 2.0 开源。',
+      p1_desc3: '在量化社区引发关注：LinkedIn 曝光过 2 万，互动过 1,000；已提交至 awesome-quant、awesome-cursorrules、awesome-ai-tools 多个榜单。',
+      p2_title: 'Quant Agent <span>——将策略研发周期从数天压缩到 5 分钟以内的 9 智能体 LLM 流水线！</span>',
+      p2_desc1: '基于 LangGraph 构建，内置三级自愈机制与多角度并行代码评审。研究员只需用中文描述策略，流水线即可自动完成规划、写码、四角度并行自审、失败自愈，并交付经过测试的回测 notebook。涵盖 1,440 个 gqdata API 的检索层经迭代提示工程后达到 88–100% 检索准确率。',
+      p2_desc2: '同时交付：自然语言 API 发现工具、每日因子数据流水线、批量监控组件，以及研究员日常使用的可复用回测可视化组件库。',
+      p3_title: 'alpha-kit <span>——覆盖量化研究完整工作流的四包多仓库项目。</span>',
+      p3_desc: '写研究代码时希望拥有的每一个组件。TDD 开发，<code>mypy --strict</code>、<code>ruff</code> 全覆盖，Python 3.11 / 3.12 CI。每个仓库 266+ 测试，覆盖率 ≥ 89%。',
+      p4_title: 'NIPT 最佳检测时点 <span>——基于 BMI 风险分层的无创产前检测调度方案。</span>',
+      p4_desc: '全国大学生数学建模竞赛广东赛区一等奖。采用信息增益划分器进行 BMI 风险分层；CatBoost + 随机森林混合模型预测最佳检测窗口；Spearman 相关 + Benjamini–Hochberg 多重比较校正进行统计显著性验证。'
+    }
+  };
+  let currentLang = localStorage.getItem('vo_lang') || 'en';
+
+  // --- Typing animation helper ---
+  // Streams text into an element; for 'html' mode, tokenizes tags so <br>/<span> render instantly
+  // and only text content types character-by-character. Cancels any prior run on the same element.
+  const __typeTokens = new WeakMap();
+  function typeInto(el, content, opts) {
+    opts = opts || {};
+    const mode = opts.mode || 'text';
+    const cps = opts.cps || 40; // chars per second
+    const delay = opts.delay || 0;
+    const showCaret = !!opts.caret;
+    // Cancel prior run
+    const prior = __typeTokens.get(el);
+    if (prior) { prior.cancelled = true; if (prior.raf) cancelAnimationFrame(prior.raf); }
+    const token = { cancelled: false, raf: null };
+    __typeTokens.set(el, token);
+
+    // Parse into a linear stream of {type:'text'|'html', value}
+    const stream = [];
+    if (mode === 'html') {
+      const re = /(<[^>]+>|&[#a-z0-9]+;|[\s\S])/g;
+      let m;
+      while ((m = re.exec(content))) {
+        const tok = m[0];
+        if (tok[0] === '<' || tok[0] === '&') stream.push({ type: 'html', value: tok });
+        else stream.push({ type: 'char', value: tok });
+      }
+    } else {
+      for (const ch of content) stream.push({ type: 'char', value: ch });
+    }
+
+    el.innerHTML = '';
+    if (showCaret) el.classList.add('typing');
+
+    const start = performance.now() + delay;
+    let i = 0;
+    let built = '';
+    function step(now) {
+      if (token.cancelled) return;
+      if (now < start) { token.raf = requestAnimationFrame(step); return; }
+      const elapsed = (now - start) / 1000;
+      // Advance until we've typed elapsed*cps chars (html tokens are free)
+      let targetChars = Math.floor(elapsed * cps);
+      let charCount = 0;
+      let j = 0;
+      built = '';
+      while (j < stream.length) {
+        const t = stream[j];
+        if (t.type === 'html') {
+          built += t.value;
+          j++;
+        } else {
+          if (charCount >= targetChars) break;
+          built += t.value;
+          charCount++;
+          j++;
+        }
+      }
+      el.innerHTML = built;
+      if (j < stream.length) {
+        token.raf = requestAnimationFrame(step);
+      } else {
+        if (showCaret) {
+          setTimeout(() => {
+            if (!token.cancelled) el.classList.remove('typing');
+          }, 1200);
+        }
+      }
+    }
+    token.raf = requestAnimationFrame(step);
+  }
+  function applyLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('vo_lang', lang);
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh' : 'en');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const txt = I18N[lang][key];
+      if (txt != null) el.textContent = txt;
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      const txt = I18N[lang][key];
+      if (txt != null) el.innerHTML = txt;
+    });
+    const btn = document.getElementById('lang-btn');
+    if (btn) btn.textContent = lang === 'en' ? 'EN / 中文' : '中文 / EN';
+    const resumeCta = document.getElementById('resume-cta');
+    if (resumeCta) resumeCta.href = lang === 'zh'
+      ? 'resume/Wendi_Ouyang_Resume_CN.pdf'
+      : 'resume/Wendi_Ouyang_Resume_EN.pdf';
+    // Replay typing animation on hero
+    const hh = document.getElementById('hero-headline');
+    const hs = document.querySelector('.hero-sub');
+    if (hh) typeInto(hh, I18N[lang].hero_headline, { mode: 'html', cps: 32, caret: true });
+    if (hs) typeInto(hs, I18N[lang].hero_sub, { mode: 'text', cps: 90, delay: 700 });
+  }
+  document.getElementById('lang-btn').addEventListener('click', () => {
+    applyLang(currentLang === 'en' ? 'zh' : 'en');
+  });
+  applyLang(currentLang);
+</script>
+</body>
+</html>

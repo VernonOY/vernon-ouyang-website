@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Block AI crawlers from copying the site (optional, tweak as needed)
+User-agent: GPTBot
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: CCBot
+Disallow: /
