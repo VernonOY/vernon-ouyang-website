@@ -1,6 +1,6 @@
 # Vernon Ouyang — Personal Site
 
-Source for [vernon-ouyang.com](https://vernon-ouyang.com) (coming soon).
+Source for [vernonouyang.com](https://vernonouyang.com) (coming soon).
 
 ## Stack
 - Pure static HTML + CSS + JS (no build step)
